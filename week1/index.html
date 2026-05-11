@@ -75,6 +75,37 @@
       background: #4263eb;
     }
 
+    .input-row select {
+      padding: 10px 10px;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      font-size: 0.9rem;
+      outline: none;
+      background: #fff;
+      color: #333;
+      cursor: pointer;
+      transition: border-color 0.2s;
+      flex-shrink: 0;
+    }
+
+    .input-row select:focus {
+      border-color: #5c7cfa;
+    }
+
+    .priority-badge {
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 20px;
+      white-space: nowrap;
+      flex-shrink: 0;
+      letter-spacing: 0.03em;
+    }
+
+    .priority-high   { background: #ffe0e0; color: #c92a2a; }
+    .priority-medium { background: #fff3cd; color: #9a6c00; }
+    .priority-low    { background: #d3f9d8; color: #2b8a3e; }
+
     #task-list {
       list-style: none;
       display: flex;
@@ -204,6 +235,11 @@
 
     <div class="input-row">
       <input type="text" id="task-input" placeholder="タスクを入力..." maxlength="100">
+      <select id="priority-select">
+        <option value="high">高</option>
+        <option value="medium" selected>中</option>
+        <option value="low">低</option>
+      </select>
       <button onclick="addTask()">追加</button>
     </div>
 
@@ -279,12 +315,18 @@
         span.textContent = task.text;
         span.onclick = () => toggleTask(index);
 
+        const PRIORITY_LABELS = { high: '高', medium: '中', low: '低' };
+        const badge = document.createElement('span');
+        badge.className = `priority-badge priority-${task.priority}`;
+        badge.textContent = PRIORITY_LABELS[task.priority] ?? task.priority;
+
         const btn = document.createElement('button');
         btn.className = 'delete-btn';
         btn.textContent = '削除';
         btn.onclick = () => deleteTask(index);
 
         li.appendChild(span);
+        li.appendChild(badge);
         li.appendChild(btn);
         list.appendChild(li);
       });
@@ -301,7 +343,8 @@
         return;
       }
 
-      tasks.push({ text, done: false });
+      const priority = document.getElementById('priority-select').value;
+      tasks.push({ text, done: false, priority });
       input.value = '';
       render();
     }
