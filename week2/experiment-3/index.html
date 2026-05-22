@@ -284,6 +284,16 @@
       white-space: nowrap;
       flex-shrink: 0;
     }
+
+    .task-item.overdue {
+      background: #fff0f0;
+      border-color: #ffc0c0;
+    }
+
+    .task-item.overdue .due-date {
+      color: #e03131;
+      font-weight: 700;
+    }
   </style>
 </head>
 <body>
@@ -410,8 +420,10 @@
 
       filtered.forEach((task) => {
         const index = tasks.indexOf(task);
+        const today = new Date().toISOString().slice(0, 10);
+        const isOverdue = !task.done && task.dueDate && task.dueDate < today;
         const li = document.createElement('li');
-        li.className = 'task-item' + (task.done ? ' done' : '');
+        li.className = 'task-item' + (task.done ? ' done' : '') + (isOverdue ? ' overdue' : '');
 
         const span = document.createElement('span');
         span.className = 'task-text';
