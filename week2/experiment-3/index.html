@@ -272,6 +272,18 @@
     .search-input:focus {
       border-color: #5c7cfa;
     }
+
+    .input-row input[type="date"] {
+      flex: 0 0 auto;
+      width: 140px;
+    }
+
+    .due-date {
+      font-size: 0.78rem;
+      color: #888;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
   </style>
 </head>
 <body>
@@ -289,6 +301,7 @@
         <option value="medium" selected>中</option>
         <option value="low">低</option>
       </select>
+      <input type="date" id="due-date">
       <button onclick="addTask()">追加</button>
     </div>
 
@@ -417,6 +430,12 @@
 
         li.appendChild(span);
         li.appendChild(badge);
+        if (task.dueDate) {
+          const dateSpan = document.createElement('span');
+          dateSpan.className = 'due-date';
+          dateSpan.textContent = task.dueDate;
+          li.appendChild(dateSpan);
+        }
         li.appendChild(btn);
         list.appendChild(li);
       });
@@ -434,7 +453,8 @@
       }
 
       const priority = document.getElementById('priority-select').value;
-      tasks.push({ text, done: false, priority });
+      const dueDate  = document.getElementById('due-date').value;
+      tasks.push({ text, done: false, priority, dueDate });
       input.value = '';
       saveTasks();
       render();
