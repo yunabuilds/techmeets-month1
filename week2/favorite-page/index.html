@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Maverick Mom – Travessia 曲紹介</title>
+  <style>
+    /* ─── リセット & ベース ─── */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', sans-serif;
+      background: #0d0d0d;
+      color: #f0f0f0;
+      min-height: 100vh;
+    }
+
+    /* ─── ヘッダー ─── */
+    header {
+      text-align: center;
+      padding: 60px 20px 40px;
+      background: linear-gradient(180deg, #1a0a2e 0%, #0d0d0d 100%);
+    }
+
+    header .band-name {
+      font-size: 0.85rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: #b07fff;
+      margin-bottom: 10px;
+    }
+
+    header h1 {
+      font-size: clamp(2rem, 6vw, 3.5rem);
+      font-weight: 900;
+      letter-spacing: 0.05em;
+      background: linear-gradient(135deg, #c084fc, #60a5fa, #f472b6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    header .album-label {
+      margin-top: 14px;
+      font-size: 0.9rem;
+      color: #888;
+      letter-spacing: 0.15em;
+    }
+
+    header .album-label span {
+      color: #c084fc;
+      font-style: italic;
+    }
+
+    /* ─── カードコンテナ（Flexbox） ─── */
+    .cards {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 28px;
+      padding: 50px 40px 80px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* ─── 個別カード ─── */
+    .card {
+      background: #181828;
+      border: 1px solid #2a2a40;
+      border-radius: 16px;
+      width: 260px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+      position: relative;
+    }
+
+    /* ホバーエフェクト */
+    .card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 40px rgba(192, 132, 252, 0.35);
+      border-color: #c084fc;
+    }
+
+    /* ─── カード画像エリア ─── */
+    .card-img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      display: block;
+      position: relative;
+      background: #0d0d0d;
+    }
+
+    /* プレースホルダー（各曲のグラデーションで個性を出す） */
+    .card-img.karakuri {
+      background: linear-gradient(135deg, #1e1b4b 0%, #6d28d9 50%, #db2777 100%);
+    }
+    .card-img.shower {
+      background: linear-gradient(135deg, #0c4a6e 0%, #0ea5e9 50%, #7dd3fc 100%);
+    }
+    .card-img.hakanaka {
+      background: linear-gradient(135deg, #1c1917 0%, #d97706 50%, #fbbf24 100%);
+    }
+    .card-img.genius {
+      background: linear-gradient(135deg, #052e16 0%, #16a34a 50%, #86efac 100%);
+    }
+
+    /* 曲番号バッジ */
+    .card-img .track-num {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      background: rgba(0, 0, 0, 0.55);
+      backdrop-filter: blur(6px);
+      color: #fff;
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      padding: 4px 10px;
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.15);
+    }
+
+    /* プレースホルダー中央アイコン */
+    .card-img .icon {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 3rem;
+      opacity: 0.6;
+      pointer-events: none;
+    }
+
+    /* ホバーでアイコンを大きく */
+    .card:hover .card-img .icon {
+      opacity: 0.85;
+      font-size: 3.5rem;
+      transition: all 0.3s ease;
+    }
+
+    /* ─── カード本文 ─── */
+    .card-body {
+      padding: 20px 18px 24px;
+    }
+
+    .card-body .song-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      margin-bottom: 8px;
+      color: #f5f0ff;
+    }
+
+    .card-body .tag {
+      display: inline-block;
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
+      padding: 2px 8px;
+      border-radius: 10px;
+      margin-bottom: 12px;
+      font-weight: 600;
+    }
+
+    .tag.dark-pop   { background: #3b0764; color: #e9d5ff; }
+    .tag.indie-rock { background: #0c4a6e; color: #bae6fd; }
+    .tag.summer     { background: #78350f; color: #fde68a; }
+    .tag.anthemic   { background: #14532d; color: #bbf7d0; }
+
+    .card-body .desc {
+      font-size: 0.83rem;
+      line-height: 1.75;
+      color: #aaa;
+    }
+
+    /* ホバーで説明文を明るく */
+    .card:hover .card-body .desc {
+      color: #ccc;
+      transition: color 0.3s ease;
+    }
+
+    /* ─── フッター ─── */
+    footer {
+      text-align: center;
+      padding: 24px;
+      font-size: 0.75rem;
+      color: #444;
+      border-top: 1px solid #1e1e2e;
+    }
+
+    footer span {
+      color: #6d28d9;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <p class="band-name">Maverick Mom</p>
+    <h1>Travessia</h1>
+    <p class="album-label">Album – <span>Travessia</span> &nbsp;|&nbsp; Pick Up Tracks</p>
+  </header>
+
+  <main class="cards">
+
+    <!-- カード1: カラクリ -->
+    <article class="card">
+      <div class="card-img karakuri">
+        <span class="track-num">TRACK 01</span>
+        <span class="icon">⚙️</span>
+      </div>
+      <div class="card-body">
+        <h2 class="song-title">カラクリ</h2>
+        <span class="tag dark-pop">Dark Pop</span>
+        <p class="desc">
+          緻密なリズムと歪んだギターが絡み合う、アルバムの核心を担う一曲。
+          複雑に入り組んだ「からくり」のような世界観を、
+          疾走感あふれるサウンドで描き出す。
+        </p>
+      </div>
+    </article>
+
+    <!-- カード2: shower -->
+    <article class="card">
+      <div class="card-img shower">
+        <span class="track-num">TRACK 02</span>
+        <span class="icon">🚿</span>
+      </div>
+      <div class="card-body">
+        <h2 class="song-title">shower</h2>
+        <span class="tag indie-rock">Indie Rock</span>
+        <p class="desc">
+          シャワーの水音のように流れるクリーントーンのギターと、
+          透き通ったボーカルが印象的。
+          日常の一瞬に宿る感情をリリカルに切り取った楽曲。
+        </p>
+      </div>
+    </article>
+
+    <!-- カード3: 儚夏 -->
+    <article class="card">
+      <div class="card-img hakanaka">
+        <span class="track-num">TRACK 03</span>
+        <span class="icon">🌻</span>
+      </div>
+      <div class="card-body">
+        <h2 class="song-title">儚夏</h2>
+        <span class="tag summer">Summer</span>
+        <p class="desc">
+          「儚い夏」という字が示すとおり、過ぎ去ることへの切なさと、
+          その眩しさを同時に歌う。
+          メロディーラインの美しさが際立つ夏の名曲。
+        </p>
+      </div>
+    </article>
+
+    <!-- カード4: ジーニアス -->
+    <article class="card">
+      <div class="card-img genius">
+        <span class="track-num">TRACK 04</span>
+        <span class="icon">✨</span>
+      </div>
+      <div class="card-body">
+        <h2 class="song-title">ジーニアス</h2>
+        <span class="tag anthemic">Anthemic</span>
+        <p class="desc">
+          力強いコーラスと前向きな歌詞が一体となった、
+          ライブで盛り上がること間違いなしのアンセム。
+          聴くたびに「自分らしくいていい」と背中を押される一曲。
+        </p>
+      </div>
+    </article>
+
+  </main>
+
+  <footer>
+    <p>Fan page &nbsp;|&nbsp; <span>Maverick Mom</span> – Travessia &nbsp;©2025</p>
+  </footer>
+
+</body>
+</html>
